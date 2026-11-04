@@ -5,7 +5,7 @@
 <h1 align="center">shiplog-widget</h1>
 
 <p align="center">
-	The embeddable changelog widget for <a href="https://shiplog.cc">Shiplog</a>. The exact MIT-licensed code your visitors' browsers run.
+	The embeddable changelog widget for <a href="https://shiplog.cc?ref=gh-repo-shiplog-widget">Shiplog</a>. The exact MIT-licensed code your visitors' browsers run.
 </p>
 
 <p align="center">
@@ -39,7 +39,7 @@ One `<script>` tag adds a notification launcher to your product: an unread badge
 </script>
 ```
 
-Get your `appKey` (an `slk_...` widget key) from your app's Widget installation page in the Shiplog dashboard.
+Get your `appKey` (an `slk_...` widget key) from your app's Widget installation page in the <a href="https://shiplog.cc?ref=gh-repo-shiplog-widget">Shiplog</a> dashboard.
 
 ## Init options
 
