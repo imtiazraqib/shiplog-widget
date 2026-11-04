@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>shiplog-widget demo</title>
+		<style>
+			* {
+				margin: 0;
+				box-sizing: border-box;
+			}
+			body {
+				min-height: 100vh;
+				background: #0a0a0f;
+				color: #e2e8f0;
+				font-family:
+					Inter,
+					ui-sans-serif,
+					system-ui,
+					sans-serif;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-image:
+					radial-gradient(ellipse 60% 40% at 20% 10%, rgba(139, 92, 246, 0.14), transparent),
+					radial-gradient(ellipse 50% 40% at 80% 90%, rgba(34, 211, 238, 0.1), transparent);
+			}
+			main {
+				text-align: center;
+				max-width: 560px;
+				padding: 24px;
+			}
+			h1 {
+				font-size: 32px;
+				margin-bottom: 12px;
+			}
+			p {
+				color: #94a3b8;
+				line-height: 1.6;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1>Acme</h1>
+			<p>
+				A fictional product page. The Shiplog widget is docked in the corner: click the
+				launcher, or call <code>Shiplog.open()</code> from the console.
+			</p>
+		</main>
+
+		<script>
+			// Demo stub: serve a canned feed instead of hitting the real API.
+			const day = 24 * 60 * 60 * 1000;
+			const now = Date.now();
+			const stubFeed = {
+				app: {
+					name: 'Acme',
+					slug: 'acme',
+					showBranding: true,
+					logoUrl: '../assets/logo.png'
+				},
+				unreadCount: 2,
+				updates: [
+					{
+						_id: 'u1',
+						title: 'Dark mode is here',
+						summary: 'The whole app now follows your system theme, with a manual override in settings.',
+						category: 'Feature',
+						publishedAt: now - day,
+						read: false
+					},
+					{
+						_id: 'u2',
+						title: 'Export your data as CSV',
+						summary: 'One-click export for all your records from the new settings panel.',
+						category: 'Improvement',
+						publishedAt: now - 4 * day,
+						read: false
+					},
+					{
+						_id: 'u3',
+						title: 'Fixed widget flicker on Safari',
+						summary: 'The launcher no longer repaints during scroll on WebKit browsers.',
+						category: 'Fix',
+						publishedAt: now - 9 * day,
+						read: true
+					}
+				]
+			};
+
+			const originalFetch = window.fetch.bind(window);
+			window.fetch = (input, init) => {
+				const url = typeof input === 'string' ? input : input.url;
+				if (url.includes('/api/widget/feed')) {
+					return Promise.resolve(
+						new Response(JSON.stringify(stubFeed), {
+							status: 200,
+							headers: { 'Content-Type': 'application/json' }
+						})
+					);
+				}
+				if (url.includes('/api/widget/read') || url.includes('/api/widget/read-all')) {
+					return Promise.resolve(
+						new Response('{}', {
+							status: 200,
+							headers: { 'Content-Type': 'application/json' }
+						})
+					);
+				}
+				return originalFetch(input, init);
+			};
+		</script>
+		<script src="../widget.js"></script>
+		<script>
+			Shiplog.init({ appKey: 'demo' });
+			if (new URLSearchParams(location.search).has('open')) {
+				Shiplog.open();
+			}
+		</script>
+	</body>
+</html>
